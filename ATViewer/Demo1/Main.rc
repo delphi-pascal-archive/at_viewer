@@ -1,0 +1,27 @@
+1 VERSIONINFO LOADONCALL MOVEABLE DISCARDABLE IMPURE 
+FILEVERSION    1, 3, 0, 0
+PRODUCTVERSION 1, 3, 0, 0
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEOS VOS__WINDOWS32
+FILETYPE VFT_APP
+{
+ BLOCK "StringFileInfo"
+ {
+  BLOCK "041904E3"
+  {
+   VALUE "FileDescription", "Universal file viewer\000"
+   VALUE "InternalName", "Viewer\000"
+   VALUE "LegalCopyright", "Copyright © 2006 Alexey Torgashin\000"
+   VALUE "ProductName", "Viewer\000"
+   VALUE "FileVersion",    "1.3\000"
+   VALUE "ProductVersion", "1.3\000"
+   VALUE "CompanyName", "Atl-Soft\000"
+  }
+ }
+ BLOCK "VarFileInfo"
+ {
+  VALUE "Translation", 1049, 1251
+ }
+}
+
+1 24 Manifest.txt

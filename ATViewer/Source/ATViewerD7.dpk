@@ -1,0 +1,47 @@
+package ATViewerD7;
+
+{$R *.res}
+{$R 'ATViewer.dcr'}
+{$R 'ATBinHex.dcr'}
+{$R 'MediaPlayer_TLB.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ATViewer'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcljpg,
+  vcl,
+  vclx,
+  vclie,
+  vclactnband,
+  dsnap,
+  dbrtl,
+  vcldb;
+
+contains
+  ATViewer in 'ATViewer.pas',
+  ATBinHex in 'ATBinHex.pas',
+  MediaPlayer_TLB in 'MediaPlayer_TLB.pas';
+
+end.

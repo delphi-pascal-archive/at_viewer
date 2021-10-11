@@ -1,0 +1,267 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+  <title>ATViewer component</title>
+</head>
+<body>
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Introduction</font></h1>
+
+<b>ATViewer</b> Delphi component allows to view files of various types.<br>
+There is no edit possibility, just quick view - so it's useful to implement
+"View file" feature in your Delphi application.
+
+<p>The following view modes are implemented:
+<ul>
+<li> <b>Text</b>: plain text/RTF files.<br>
+  The whole file contents is loaded into RichEdit control.
+<li> <b>Binary</b>: any file (unlimited size).<br>
+  File is shown in binary form, with fixed line length (default is 80 chars).
+  Used ATBinHex component: only visible part of file is loaded into memory.
+  Suitable for large files or files of unknown type.
+<li> <b>Hex</b>: any file (unlimited size).<br>
+  File is shown in standard hex dump using ATBinHex component. Suitable for
+  large files or files of unknown type.
+<li> <b>Unicode</b>: any file (unlimited size).<br>
+  Unicode (2 bytes encoding) contents of file is shown in binary form, with
+  fixed line length.
+<li> <b>Image</b>: BMP/JPG/ICO/GIF/PNG/WMF/EMF/TGA/etc.<br>
+  File is shown using TImage component.
+<li> <b>Multimedia</b>: all file types supported by Windows Media Player (AVI/MPEG/WMV/MP3/etc).<br>
+  File is shown using WMP ActiveX control.
+<li> <b>Internet</b>: all file types supported by MSIE (HTML/XML/DOC/XLS/etc).<br>
+  File is shown using MSIE ActiveX control.
+</ul>
+
+<p>Current limitations:
+<ul>
+<li> No Select/Copy/Print commands in Unicode/Image modes.
+<li> No Print Preview command in Binary/Hex/Unicode modes.
+</ul>
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Installation</font></h1>
+
+First, install any additional components needed, see
+<a href=#AddComp><b>Additional components</b></a> section below.
+All these components are disabled by default, but if you need their features
+and have installed them, enable their usage in file ATViewerDef.inc:
+
+<ul>
+<li> to enable usage of <b>GraphicEx Library</b>, uncomment definition <i>{$define GEx}</i>
+<li> to enable usage of <b>RX Library</b>, uncomment definition <i>{$define GIF}</i>
+<li> to enable usage of <b>Tnt Unicode Controls</b>, uncomment definition <i>{$define TNT}</i>
+</ul>
+
+<p>Installation:
+<ul>
+<li> Delphi 5: compile and install package ATViewerD5.dpk
+<li> Delphi 6: compile and install package ATViewerD6.dpk
+<li> Delphi 7: compile and install package ATViewerD7.dpk
+<li> BDS 2005: compile and install package ATViewerD2005.dpk
+<li> BDS 2006: compile and install package ATViewerD2006.dpk
+</ul>
+
+<p>Components <b>ATViewer</b> and <b>ATBinHex</b> will be installed into
+"Samples" page of component pallette.
+
+<p>Note: BDS 2005 may show "External Exception" error when application
+with <b>ATViewer</b> component closes. To prevent this, run application
+outside of IDE.
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Usage</font></h1>
+
+There are 3 components included in this package:
+
+<ol>
+<li><b>ATViewer</b>: main component that has all view modes implemented in it.
+<li><b>ATBinHex</b>: helper component that implements only Binary, Hex and Unicode view modes.
+    <br>It can be used separately, if you don't need all of the modes provided by <b>ATViewer</b>.
+<li><b>WMP</b> (on ActiveX page): helper component that implements
+    Windows Media Player interface.
+    <br>It's just automatically generated from Delphi IDE.
+</ol>
+
+<p><b>ATViewer</b> component has the following properties:
+
+<ul>
+<li> <i>Mode</i> - sets current view mode
+<li> <i>ModeDetect</i> - enables mode auto-detection on file opening
+<li> <i>MediaMode</i> - sets multimedia mode: usage of TMediaPlayer component
+        or usage of Windows Media Player ActiveX control
+<li> <i>MediaPlay</i> - enables movies auto-play in Multimedia mode
+<li> <i>MediaFit</i> - enables "Fit image to window" in Multimedia mode
+<li> <i>TextDetect</i> - enables auto-detection of text files
+<li> <i>TextDetectSize</i> - text files detection: size of block (in Kb) read to detect text
+<li> <i>TextDetectLimit</i> - text files detection: maximal file size (in Kb) allowed, 0: don't limit
+<li> <i>TextEncoding</i> - sets text encoding (OEM/ANSI) in Text/Binary/Hex modes
+<li> <i>TextWrap</i> - enables "Word wrap" mode in Text mode
+<li> <i>TextWidth</i> - sets width of text in Binary/Unicode modes
+<li> <i>TextWidthFit</i> - enables width auto-fit in Binary/Unicode modes (works correctly only with monospaced font)
+<li> <i>TextWidthFitHex</i> - enables width auto-fit in Hex mode
+<li> <i>TextSearchIndent</i> - sets "Search result: lines from top" number in Text/Binary/Hex modes
+<li> <i>TextFont</i> - sets font/color of text in Text/Binary/Hex/Unicode modes
+<li> <i>TextColor</i> - sets color of background in Text/Binary/Hex/Unicode modes
+<li> <i>TextColorError</i> - sets color of error messages in Binary/Hex/Unicode mode
+<li> <i>TextColorHex, TextColorHex2</i> - sets color of hex digits in Hex mode
+<li> <i>TextColorLines</i> - sets color of vertical lines in Hex mode
+<li> <i>TextPosPercent</i> - sets current position in percents (%) in Text/Binary/Hex/Unicode modes
+<li> <i>WebOffline</i> - enables "Offline" mode in Internet mode
+<li> <i>IsFocused</i> - enables focus change on opening file
+</ul>
+
+and the following methods:
+
+<ul>
+<li> <i>function Open(const AFileName: WideString): boolean;</i> - opens a file
+<li> <i>procedure FindText(const fText: string; fWholeWords, fCaseSens: boolean);</i>
+     - finds and highlights a text in Text/Binary/Hex modes.
+     fWholeWords: find only whole words, fCaseSens: match text case
+<li> <i>procedure FindNext;</i> - repeats last text search
+<li> <i>procedure FindWeb;</i> - calls Search dialog in Internet mode
+<li> <i>procedure CopyToClipboard;</i> - copies selected text to clipboard in Text/Binary/Hex/Internet modes
+<li> <i>procedure SelectAll;</i> - selects all text in Text/Binary/Hex/Internet modes
+<li> <i>procedure PrintDialog;</i> - calls Print dialog in Text/Binary/Hex/Internet modes
+<li> <i>procedure PrintPreview;</i> - calls Print Preview dialog in Internet mode
+<li> <i>procedure PrintSetup;</i> - calls Print Setup dialog in Text/Binary/Hex/Internet modes
+</ul>
+
+<p><b>ATBinHex</b> component has the following properties:
+
+<ul>
+<li> <i>Mode</i> - sets current view mode
+<li> <i>TextEncoding</i> - sets text encoding (OEM/ANSI)
+<li> <i>TextWidth</i> - sets width of text in Binary/Unicode modes
+<li> <i>TextWidthHex</i> - sets width of text in Hex mode
+<li> <i>TextWidthFit</i> - enables width auto-fit in Binary/Unicode modes (works correctly only with monospaced font)
+<li> <i>TextWidthFitHex</i> - enables width auto-fit in Hex mode
+<li> <i>Font</i> (inherited) - sets font/color of text
+<li> <i>Color</i> (inherited) - sets color of background
+<li> <i>TextColorError</i> - sets color of error messages
+<li> <i>TextColorHex, TextColorHex2</i> - sets color of hex digits in Hex mode
+<li> <i>TextColorLines</i> - sets color of vertical lines in Hex mode
+<li> <i>TextSearchIndent</i> - sets "Search result: lines from top" number
+<li> <i>TextPosPercent</i> - sets current position in percents (%)
+<li> <i>SelStart</i> (read-only) - position (0-based) of selection start
+<li> <i>SelLength</i> (read-only) - length of selection
+</ul>
+
+and the following methods:
+
+<ul>
+<li> <i>function Open(const AFileName: WideString): boolean;</i> - opens a file
+<li> <i>function FindText(const fText: string; const fPos: Int64; fWholeWords, fCaseSens: boolean): Int64;</i>
+     - finds a text.
+     fPos: start position (0-based), fWholeWords: find only whole words,
+     fCaseSens: match text case, result: found position or -1
+<li> <i>procedure CopyToClipboard;</i>
+     - copies selected text to clipboard
+<li> <i>procedure SetSelection(const AStart, ALength: Int64; fPosition: boolean);</i>
+     - sets selection: from position AStart with length ALength,
+     fPosition: scroll to position AStart
+<li> <i>procedure SelectAll;</i> - selects all text
+<li> <i>procedure SelectNone;</i> - deselects text
+<li> <i>procedure Print(OnlySel: boolean; Copies: integer);</i>
+     - prints the whole text contents or only selection (in several copies)
+</ul>
+
+<p><b>WMP</b> component is not described here, it's just imported ActiveX control.
+
+<!------------------------------------------------------------------>
+<a name="AddComp">
+<h1><font color=black>Additional components</font></h1>
+
+<ol>
+<li>You need two additional libraries to support many non-standard graphic formats:
+  <b>RX Library</b> to support animated GIF and
+  <b>GraphicEx Library</b> to support other formats such as PNG/TGA/PCX/PSD/TIFF/etc.
+
+  <p>Download here:
+  <a href="http://www.lischke-online.de"><b>GraphicEx Library</b></a>,
+  <a href="http://sourceforge.net/projects/rxlib/"><b>RX Library</b></a>.
+
+  <p>After you installed these libraries, enable their usage in file ATViewerDef.inc.
+  Uncomment these defines:
+  <br><i>{$define GEx}</i>
+  <br><i>{$define GIF}</i>
+
+<p>
+<li>Some Unicode features (under Windows 2000/XP) are supported using <b>Tnt Unicode Controls</b>.
+
+  <p>Download here:
+  <a href="http://tnt.ccci.org/delphi_unicode_controls/"><b>Tnt Unicode Controls</b></a>.
+
+  <p>After you installed these controls, enable their usage in file ATViewerDef.inc.
+  Uncomment this line:
+  <br><i>{$define TNT}</i>
+</ol>
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Versions history</font></h1>
+
+<ul>
+<li> 1.3.2 (14.06.06):
+     TextDetectLimit property
+<p>
+<li> 1.3.1 (14.06.06):
+     mouse selection in Binary/Hex modes;
+     <br> scrollbar in Binary/Hex modes is drawn more correctly;
+     <br> properties TextColorError, TextPosPercent (and Goto command in Demo1);
+     <br> Readme: description of all properties and methods;
+     <br> support for Delphi 2005/2006
+<p>
+<li> 1.2.5 (08.06.06):
+     fixed: control correctly receives focus, so arrows/wheel works in Demo2; other small fixes;
+     <br> TextWidthFit/TextWidthFitHex properties (work correctly only with monospaced font);
+     <br> TextColorHex/TextColorHex2/TextColorLines properties
+<p>
+<li> 1.2.0 (02.05.06):
+     Select/Copy/Search/Print commands in Internet mode;
+     <br> Print command in Text/Binary/Hex modes;
+     <br> auto-detection of text files by contents;
+     <br> MediaMode property allows to use Windows Media Player ActiveX control;
+     <br> many properties were renamed;
+     <br> second demo added
+<p>
+<li> 1.1.0 (24.03.06):
+     added Internet mode that uses MSIE control;
+     <br> Select/Copy/Search commands in Text/Binary/Hex modes;
+     <br> mouse wheel in Binary/Hex/Unicode modes;
+     <br> scroll bars in Image mode;
+     <br> track bar in Multimedia mode;
+     <br> support for many graphic formats using GraphicEx library
+<p>
+<li> 1.0.0 (16.03.06):
+     initial version
+</ul>
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Copyrights</font></h1>
+
+<p><b>ATViewer</b>, <b>ATBinHex</b> components &copy; 2006 Alexey Torgashin
+<br><a href="http://atorg.net.ru">http://atorg.net.ru</a>
+
+<p><b>GraphicEx</b> &copy; 1999, 2002 Mike Lischke  
+<br><a href="http://www.lischke-online.de">http://www.lischke-online.de</a>
+
+<p><b>RX Library</b> &copy; Fedor Kozhevnikov, Igor Pavluk, Serge Korolev
+<br><a href="http://sourceforge.net/projects/rxlib/">http://sourceforge.net/projects/rxlib/</a>
+
+<p><b>Tnt Unicode Controls</b> &copy; 2002-2004 Troy Wolbrink
+<br><a href="http://tnt.ccci.org/delphi_unicode_controls/">http://tnt.ccci.org/delphi_unicode_controls/</a>
+
+<p><b>Compilers.inc</b> file &copy; 1999-2005 Mike Lischke, &copy; 2005 Jim Kueneman
+
+<!------------------------------------------------------------------>
+<h1><font color=black>Contacts</font></h1>
+
+<p>If you encounter problems with installation/usage of this component,
+or you have any comments, feel free to contact the author:
+
+<p>Alexey Torgashin
+<br><a href="http://atorg.net.ru">http://atorg.net.ru</a>
+<br><a href="mailto:atorg@yandex.ru">atorg@yandex.ru</a>
+
+</body></html>

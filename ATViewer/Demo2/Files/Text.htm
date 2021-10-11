@@ -1,0 +1,38 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+  <title>ATViewer component</title>
+</head>
+<body>
+
+<!------------------------------------------------------------------>
+<font color=darkblue><b>ATViewer</b></font> Delphi component allows to view files of various types.<br>
+There is no edit possibility, just quick view - so it's useful to implement
+"View file" feature in your Delphi application.
+
+<p>The following view modes are implemented:
+
+<ul>
+<li> <b>Text</b>: plain text/RTF files.<br>
+  The whole file contents is loaded into RichEdit control.
+<li> <b>Binary</b>: any file (unlimited size).<br>
+  File is shown in binary form, with fixed line length (default is 80 chars).
+  Used ATBinHex component: only visible part of file is loaded into memory.
+  Suitable for large files or files of unknown type.
+<li> <b>Hex</b>: any file (unlimited size).<br>
+  File is shown in standard hex dump using ATBinHex component. Suitable for
+  large files or files of unknown type.
+<li> <b>Unicode</b>: any file (unlimited size).<br>
+  Unicode (2 bytes encoding) contents of file is shown in binary form, with
+  fixed line length.
+<li> <b>Image</b>: BMP/JPG/ICO/GIF/PNG/WMF/EMF/TGA/etc.<br>
+  File is shown using TImage component.
+<li> <b>Multimedia</b>: all file types supported by Windows Media Player (AVI/MPEG/WMV/MP3/etc).<br>
+  File is shown using WMP ActiveX control.
+<li> <b>Internet</b>: all file types supported by MSIE (HTML/XML/DOC/XLS/etc).<br>
+  File is shown using MSIE ActiveX control.
+</ul>
+
+
+</body></html>
+
